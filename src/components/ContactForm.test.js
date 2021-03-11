@@ -20,7 +20,11 @@ describe('Happy Path', () =>{
     });
     
     test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
-        
+        render(<ContactForm />)
+        const firstNameInput = screen.getByLabelText('First Name*')
+        userEvent.type(firstNameInput, 'Bob')
+        const firstNameError = screen.getByText(/error/i)
+        expect(firstNameError).toBeInTheDocument();
     });
     
     test('renders THREE error messages if user enters no values into any fields.', async () => {
