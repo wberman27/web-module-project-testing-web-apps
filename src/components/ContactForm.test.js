@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import ContactForm from './ContactForm';
 
-describe('Happy Path', () =>{
+describe('Form Tests', () =>{
 
     test('renders without errors', ()=>{
         render(<ContactForm />)
@@ -50,11 +50,23 @@ describe('Happy Path', () =>{
     });
     
     test('renders "email must be a valid email address" if an invalid email is entered', async () => {
-        
+        render(<ContactForm />)
+        const emailInput = screen.getByLabelText('Email*')
+        userEvent.type(emailInput, 'Y')
+        const emailError = screen.getByText(/email must be a valid email address./i)
+        expect(emailError).toBeInTheDocument();
     });
     
     test('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
-        
+        render(<ContactForm />)
+        const firstNameInput = screen.getByLabelText('First Name*')
+        const emailInput = screen.getByLabelText('Email*')
+        const submit = screen.getByRole('button')
+        userEvent.type(firstNameInput, 'William')
+        userEvent.type(emailInput, 'emaily@email.com')
+        userEvent.click(submit)
+        const lastNameError = screen.getByText(/lastName is a required field./i)
+        expect(lastNameError).toBeInTheDocument();
     });
     
     test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
