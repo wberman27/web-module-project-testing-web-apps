@@ -36,7 +36,17 @@ describe('Happy Path', () =>{
     });
     
     test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
-        
+        render(<ContactForm />)
+        const firstNameInput = screen.getByLabelText('First Name*')
+        const lastNameInput = screen.getByLabelText('Last Name*')
+        userEvent.type(firstNameInput, 'Johnathon')
+        userEvent.type(lastNameInput, 'Smith')
+        const submit = screen.getByRole('button')
+        userEvent.click(submit)
+        const emailError = screen.getByText(/email must be a valid email address./i)
+        const error = screen.getAllByText(/error/i)
+        expect(emailError).toBeInTheDocument();
+        expect(error.length===1).toBeTruthy();
     });
     
     test('renders "email must be a valid email address" if an invalid email is entered', async () => {
