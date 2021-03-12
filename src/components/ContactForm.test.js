@@ -28,7 +28,11 @@ describe('Happy Path', () =>{
     });
     
     test('renders THREE error messages if user enters no values into any fields.', async () => {
-        
+        render(<ContactForm />)
+        const submit = screen.getByRole('button')
+        userEvent.click(submit)
+        const error = screen.getAllByText(/error/i)
+        expect(error.length===3).toBeTruthy();
     });
     
     test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
